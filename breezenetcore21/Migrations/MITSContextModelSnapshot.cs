@@ -367,6 +367,157 @@ namespace breezenetcore21.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ClientSecret");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ConsentType");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("Permissions");
+
+                    b.Property<string>("PostLogoutRedirectUris");
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("RedirectUris");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(25);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId")
+                        .IsUnique();
+
+                    b.ToTable("OpenIddictApplications");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationId");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("Scopes");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(25);
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(25);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId", "Status", "Subject", "Type");
+
+                    b.ToTable("OpenIddictAuthorizations");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictScope", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("Resources");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("OpenIddictScopes");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationId");
+
+                    b.Property<string>("AuthorizationId");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTimeOffset?>("CreationDate");
+
+                    b.Property<DateTimeOffset?>("ExpirationDate");
+
+                    b.Property<string>("Payload");
+
+                    b.Property<string>("Properties");
+
+                    b.Property<string>("ReferenceId")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(25);
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(25);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorizationId");
+
+                    b.HasIndex("ReferenceId")
+                        .IsUnique()
+                        .HasFilter("[ReferenceId] IS NOT NULL");
+
+                    b.HasIndex("ApplicationId", "Status", "Subject", "Type");
+
+                    b.ToTable("OpenIddictTokens");
+                });
+
             modelBuilder.Entity("breezenetcore21.Models.Event", b =>
                 {
                     b.HasOne("breezenetcore21.Models.WildApricotEvent", "WaEvent")
@@ -445,6 +596,24 @@ namespace breezenetcore21.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization", b =>
+                {
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication", "Application")
+                        .WithMany("Authorizations")
+                        .HasForeignKey("ApplicationId");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictToken", b =>
+                {
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication", "Application")
+                        .WithMany("Tokens")
+                        .HasForeignKey("ApplicationId");
+
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization", "Authorization")
+                        .WithMany("Tokens")
+                        .HasForeignKey("AuthorizationId");
                 });
 #pragma warning restore 612, 618
         }

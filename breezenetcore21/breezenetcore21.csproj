@@ -13,12 +13,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNet.Security.OpenIdConnect.Server" Version="2.0.0" />
     <PackageReference Include="Breeze.AspNetCore.NetCore" Version="0.1.2" />
     <PackageReference Include="Breeze.Persistence.EFCore" Version="0.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="OpenIddict" Version="2.0.0" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contexts\Seeds\" />
     <Folder Include="Models\" />
   </ItemGroup>
 
